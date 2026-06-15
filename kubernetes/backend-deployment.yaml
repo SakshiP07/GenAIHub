@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: genaihub-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: genaihub-backend
+  template:
+    metadata:
+      labels:
+        app: genaihub-backend
+    spec:
+      containers:
+        - name: backend
+          image: genaihub-backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+          env:
+            - name: PORT
+              value: "5000"
+            - name: NODE_ENV
+              value: production
+            - name: CORS_ORIGIN
+              value: "*"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 20
