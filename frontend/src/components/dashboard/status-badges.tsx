@@ -4,7 +4,6 @@ import type { ModelStatus, ServiceState } from "@/lib/data";
 
 const modelStatusStyles: Record<ModelStatus, string> = {
   Active: "border-green-200 bg-green-50 text-green-800",
-  Maintenance: "border-yellow-200 bg-yellow-50 text-yellow-800",
 };
 
 const serviceStatusStyles: Record<ServiceState, string> = {

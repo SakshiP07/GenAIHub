@@ -86,19 +86,24 @@ Stages: Build → Test → Docker Build → Deploy
 
 **Viva answer:** Jenkins automates CI/CD.
 
-## Monitoring
+## Monitoring (Prometheus + Grafana)
+
+Connected to Docker project **genaihub-devops-project** (`genaihub-frontend`, `genaihub-backend`).
 
 ```bash
-cd monitoring
-docker compose up -d
+# Start app + monitoring together
+docker compose -f docker-compose.yml -f docker-compose.monitoring.yml up -d --build
 ```
 
 | Service | URL |
 |---------|-----|
 | Grafana | http://localhost:3001 (admin / admin) |
 | Prometheus | http://localhost:9090 |
+| cAdvisor | http://localhost:8080 |
 
-Dashboard panels: CPU Usage, Memory Usage, Container Status.
+Dashboard: **GenAIHub Docker Monitoring** (CPU, Memory, Container Status, Service Health)
+
+Full guide: [docs/MONITORING.md](./docs/MONITORING.md)
 
 **Viva answer:** Prometheus collects metrics and Grafana visualizes them.
 

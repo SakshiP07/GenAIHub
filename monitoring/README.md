@@ -1,46 +1,36 @@
 # GenAIHub Monitoring
 
-Prometheus and Grafana stack for GenAIHub infrastructure and container monitoring.
+Monitoring stack for the **genaihub-devops-project** Docker Compose project.
 
-## Components
+## Recommended: Run with App Stack
 
-| Service | Port | Purpose |
-|---------|------|---------|
-| Prometheus | 9090 | Collects metrics |
-| Grafana | 3001 | Visualizes metrics |
-| Node Exporter | 9100 | Host CPU and memory metrics |
-| cAdvisor | 8080 | Container metrics |
+From project root (monitors `genaihub-frontend` and `genaihub-backend`):
 
-## Dashboard Panels
+```bash
+docker compose -f docker-compose.yml -f docker-compose.monitoring.yml up -d --build
+```
 
-- CPU Usage
-- Memory Usage
-- Container Status
-
-## Start Monitoring
+## Standalone (app must already be running)
 
 ```bash
 cd monitoring
 docker compose up -d
 ```
 
-Open Grafana: [http://localhost:3001](http://localhost:3001)
+Uses external network `genaihub-devops-project_genaihub-network`.
 
-- Username: `admin`
-- Password: `admin`
+## URLs
 
-Dashboard: **GenAIHub Monitoring**
+| Service | URL |
+|---------|-----|
+| Grafana | http://localhost:3001 (admin / admin) |
+| Prometheus | http://localhost:9090 |
+| cAdvisor | http://localhost:8080 |
 
-Prometheus UI: [http://localhost:9090](http://localhost:9090)
-
-Stop monitoring:
-
-```bash
-docker compose down
-```
+Full guide: [docs/MONITORING.md](../docs/MONITORING.md)
 
 ## Viva Answer
 
 **Prometheus collects metrics and Grafana visualizes them.**
 
-Prometheus scrapes time-series data from services and exporters. Grafana connects to Prometheus and displays dashboards for CPU, memory, and container health.
+Metrics come from Docker containers in the `genaihub-devops-project` stack via cAdvisor and HTTP health checks via Blackbox Exporter.

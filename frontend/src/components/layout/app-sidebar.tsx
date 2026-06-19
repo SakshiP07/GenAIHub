@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   Activity,
   Box,
+  Gauge,
   LayoutDashboard,
   Sparkles,
 } from "lucide-react";
@@ -15,6 +16,7 @@ const navItems = [
   { href: "/inference", label: "AI Inference", icon: Sparkles },
   { href: "/models", label: "Models", icon: Box },
   { href: "/monitoring", label: "Monitoring", icon: Activity },
+  { href: "/observability", label: "Observability Dashboard", icon: Gauge },
 ];
 
 interface AppSidebarProps {

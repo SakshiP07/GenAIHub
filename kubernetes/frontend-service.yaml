@@ -5,7 +5,9 @@ metadata:
   labels:
     app: genaihub-frontend
 spec:
-  type: LoadBalancer
+  # ClusterIP avoids binding host port 3000 (conflicts with docker compose).
+  # Use: kubectl port-forward svc/frontend-service 3000:3000
+  type: ClusterIP
   selector:
     app: genaihub-frontend
   ports:

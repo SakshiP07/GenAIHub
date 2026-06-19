@@ -1,7 +1,5 @@
 {
-  "annotations": {
-    "list": []
-  },
+  "annotations": { "list": [] },
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -9,16 +7,8 @@
   "links": [],
   "panels": [
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "Prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "percent"
-        },
-        "overrides": []
-      },
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "fieldConfig": { "defaults": { "unit": "percent" }, "overrides": [] },
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
       "id": 1,
       "options": {
@@ -27,25 +17,17 @@
       },
       "targets": [
         {
-          "expr": "100 - (avg by(instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
-          "legendFormat": "CPU Usage",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{container_label_com_docker_compose_project=\"genaihub-devops-project\", container_label_com_docker_compose_service=~\"frontend|backend\"}[5m])) * 100",
+          "legendFormat": "GenAIHub Containers CPU",
           "refId": "A"
         }
       ],
-      "title": "CPU Usage",
+      "title": "CPU Usage (GenAIHub Containers)",
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "Prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "percent"
-        },
-        "overrides": []
-      },
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "fieldConfig": { "defaults": { "unit": "decmbytes" }, "overrides": [] },
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
       "id": 2,
       "options": {
@@ -54,49 +36,60 @@
       },
       "targets": [
         {
-          "expr": "(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100",
-          "legendFormat": "Memory Usage",
+          "expr": "sum(container_memory_usage_bytes{container_label_com_docker_compose_project=\"genaihub-devops-project\", container_label_com_docker_compose_service=~\"frontend|backend\"}) / 1024 / 1024",
+          "legendFormat": "GenAIHub Containers Memory (MB)",
           "refId": "A"
         }
       ],
-      "title": "Memory Usage",
+      "title": "Memory Usage (GenAIHub Containers)",
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "Prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
       "id": 3,
-      "options": {
-        "showHeader": true
-      },
+      "options": { "showHeader": true },
       "targets": [
         {
-          "expr": "count by (name) (container_last_seen{name=~\".+\"})",
+          "expr": "container_last_seen{container_label_com_docker_compose_project=\"genaihub-devops-project\", container_label_com_docker_compose_service=~\"frontend|backend\"}",
           "format": "table",
           "instant": true,
-          "legendFormat": "{{name}}",
+          "legendFormat": "{{container_label_com_docker_compose_service}}",
           "refId": "A"
         }
       ],
       "title": "Container Status",
       "type": "table"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "fieldConfig": { "defaults": { "unit": "none" }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "id": 4,
+      "options": {
+        "legend": { "displayMode": "list", "placement": "bottom" },
+        "tooltip": { "mode": "single" }
+      },
+      "targets": [
+        {
+          "expr": "probe_success{project=\"genaihub-devops-project\"}",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Service Health (Frontend & Backend)",
+      "type": "timeseries"
     }
   ],
   "refresh": "10s",
   "schemaVersion": 39,
   "style": "dark",
-  "tags": ["genaihub", "devops"],
+  "tags": ["genaihub", "devops", "docker"],
   "templating": { "list": [] },
   "time": { "from": "now-15m", "to": "now" },
   "timezone": "",
-  "title": "GenAIHub Monitoring",
+  "title": "GenAIHub Docker Monitoring",
   "uid": "genaihub-monitoring",
-  "version": 1
+  "version": 2
 }

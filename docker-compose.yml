@@ -1,3 +1,5 @@
+name: genaihub-devops-project
+
 services:
   backend:
     build:
